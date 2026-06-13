@@ -213,7 +213,7 @@
                 const grids = document.querySelectorAll('.services-grid');
                 if (grids.length) {
                     grids[0].innerHTML = content.services.map((s, i) =>
-                        '<div class="service-card reveal reveal-delay-' + ((i % 3) + 1) + '"><div class="service-icon">' + (s.icon ? '<i class="fas ' + s.icon + '"></i>' : '<i class="fas fa-home"></i>') + '</div><h3>' + s.title + '</h3><p>' + s.description + '</p></div>'
+                        '<div class="service-card reveal visible reveal-delay-' + ((i % 3) + 1) + '"><div class="service-icon">' + (s.icon ? '<i class="fas ' + s.icon + '"></i>' : '<i class="fas fa-home"></i>') + '</div><h3>' + s.title + '</h3><p>' + s.description + '</p></div>'
                     ).join('');
                 }
             }
