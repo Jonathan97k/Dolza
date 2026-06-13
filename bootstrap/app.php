@@ -24,7 +24,13 @@ $app = Application::configure(basePath: dirname(__DIR__))
             'api/*',
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {})
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->render(function ($request, Throwable $e) {
+            return response($e->getMessage() . "\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString(), 500, [
+                'Content-Type' => 'text/plain',
+            ]);
+        });
+    })
     ->create()
     ->usePublicPath(__DIR__.'/../public');
 
