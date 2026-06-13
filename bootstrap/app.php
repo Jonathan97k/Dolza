@@ -25,7 +25,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function ($request, Throwable $e) {
+        $exceptions->render(function (Throwable $e, $request) {
             return response($e->getMessage() . "\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString(), 500, [
                 'Content-Type' => 'text/plain',
             ]);
