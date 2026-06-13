@@ -13,6 +13,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->trustProxies(at: '*');
         $middleware->alias([
             'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         ]);
@@ -26,7 +27,10 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e, $request) {
-            $msg = "Error: " . $e->getMessage() . "\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString();
+            $debug = config('app.debug');
+            $msg = $debug
+                ? "Error: " . $e->getMessage() . "\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString()
+                : "Server Error";
             return new \Symfony\Component\HttpFoundation\Response($msg, 500, ['Content-Type' => 'text/plain']);
         });
     })
