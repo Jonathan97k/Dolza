@@ -120,21 +120,49 @@
     <!-- SERVICES -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title">Our Services</h2>
-            <p class="section-subtitle">Comprehensive real estate services tailored to your needs</p>
+            <div class="section-header">
+                <span class="section-tag">What We Offer</span>
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-subtitle">Comprehensive real estate services tailored to your needs</p>
+            </div>
             <div class="services-grid">
                 @forelse($services as $i => $service)
-                    <div class="service-card reveal reveal-delay-{{ ($i % 5) + 1 }}">
-                        <span class="service-icon">{!! $service->icon ?? '&#127968;' !!}</span>
+                    <div class="service-card reveal reveal-delay-{{ ($i % 3) + 1 }}">
+                        <div class="service-icon">{!! $service->icon ? '<i class="fas ' . e($service->icon) . '"></i>' : '<i class="fas fa-home"></i>' !!}</div>
                         <h3>{{ $service->title ?? $service->name }}</h3>
                         <p>{{ $service->description ?? $service->content }}</p>
                     </div>
                 @empty
-                    <div class="service-card reveal reveal-delay-1"><span class="service-icon">&#127968;</span><h3>We Sell Properties</h3><p>Find your perfect property from our wide listings</p></div>
-                    <div class="service-card reveal reveal-delay-2"><span class="service-icon">&#128176;</span><h3>We Buy Properties</h3><p>We offer fair prices for your land and property</p></div>
-                    <div class="service-card reveal reveal-delay-3"><span class="service-icon">&#128144;</span><h3>Land Surveying</h3><p>Professional land surveying and boundary marking</p></div>
-                    <div class="service-card reveal reveal-delay-4"><span class="service-icon">&#128196;</span><h3>Title Deed Processing</h3><p>We handle all title deed and legal documentation</p></div>
-                    <div class="service-card reveal"><span class="service-icon">&#128226;</span><h3>Business Advertisement</h3><p>Advertise your business to thousands of clients</p></div>
+                    <div class="service-card reveal reveal-delay-1">
+                        <div class="service-icon"><i class="fas fa-home"></i></div>
+                        <h3>We Sell Properties</h3>
+                        <p>Find your perfect property from our curated selection of premium listings across Malawi.</p>
+                    </div>
+                    <div class="service-card reveal reveal-delay-2">
+                        <div class="service-icon"><i class="fas fa-tag"></i></div>
+                        <h3>We Buy Properties</h3>
+                        <p>We offer fair prices for your land and property with quick cash purchases and hassle-free transactions.</p>
+                    </div>
+                    <div class="service-card reveal reveal-delay-3">
+                        <div class="service-icon"><i class="fas fa-draw-polygon"></i></div>
+                        <h3>Land Surveying</h3>
+                        <p>Professional land surveying and boundary marking services with certified surveyors.</p>
+                    </div>
+                    <div class="service-card reveal reveal-delay-1">
+                        <div class="service-icon"><i class="fas fa-file-signature"></i></div>
+                        <h3>Title Deed Processing</h3>
+                        <p>We handle all title deed and legal documentation for smooth and secure property transactions.</p>
+                    </div>
+                    <div class="service-card reveal reveal-delay-2">
+                        <div class="service-icon"><i class="fas fa-bullhorn"></i></div>
+                        <h3>Business Advertisement</h3>
+                        <p>Advertise your business to thousands of potential clients across Malawi through our platform.</p>
+                    </div>
+                    <div class="service-card reveal reveal-delay-3">
+                        <div class="service-icon"><i class="fas fa-compass"></i></div>
+                        <h3>Property Development Consultation</h3>
+                        <p>Expert guidance on land suitability, development potential, and investment opportunities.</p>
+                    </div>
                 @endforelse
             </div>
         </div>
@@ -338,7 +366,10 @@
                 const grid = document.querySelector('.services-grid');
                 if (grid) {
                     grid.innerHTML = content.services.map((s, i) =>
-                        '<div class="service-card reveal reveal-delay-' + ((i%4)+1) + '"><span class="service-icon">' + (s.icon ? '<i class="fas ' + s.icon + '" style="font-size:2.4rem;color:var(--gold);"></i>' : '\uD83C\uDFE0') + '</span><h3>' + s.title + '</h3><p>' + s.description + '</p></div>'
+                        '<div class="service-card reveal reveal-delay-' + ((i%3)+1) + '">' +
+                        '<div class="service-icon">' + (s.icon ? '<i class="fas ' + s.icon + '"></i>' : '<i class="fas fa-home"></i>') + '</div>' +
+                        '<h3>' + s.title + '</h3>' +
+                        '<p>' + s.description + '</p></div>'
                     ).join('');
                     grid.querySelectorAll('.service-card').forEach(c => c.classList.add('visible'));
                 }
