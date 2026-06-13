@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Models\Setting;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+class SettingController extends Controller
+{
+    public function index()
+    {
+        $settings = Setting::all()->pluck('value', 'key');
+
+        return response()->json($settings);
+    }
+
+    public function update(Request $request)
+    {
+        foreach ($request->all() as $key => $value) {
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['id' => (string) Str::uuid(), 'value' => $value]
+            );
+        }
+
+        $settings = Setting::all()->pluck('value', 'key');
+
+        return response()->json($settings);
+    }
+}
