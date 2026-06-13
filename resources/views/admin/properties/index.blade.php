@@ -34,7 +34,7 @@
                 <tbody>
                     @forelse($properties as $property)
                     <tr>
-                        <td><img src="{{ $property->image ? $property->image : '/favicon.png' }}" alt="" class="admin-preview-img"></td>
+                        <td><img src="{{ $property->image ? asset('images/' . $property->image) : '/favicon.png' }}" alt="" class="admin-preview-img"></td>
                         <td><strong style="color:var(--text-primary);">{{ $property->name }}</strong></td>
                         <td><span style="text-transform:capitalize;">{{ $property->type ?? '—' }}</span></td>
                         <td>{{ $property->location ?? '—' }}</td>

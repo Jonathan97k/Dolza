@@ -15,7 +15,17 @@ class Property extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        '*',
+        'name',
+        'type',
+        'location',
+        'price',
+        'details',
+        'status',
+        'image',
+        'featured',
+        'bedrooms',
+        'bathrooms',
+        'area',
     ];
 
     protected function casts(): array

@@ -19,7 +19,7 @@ Route::get('/site-images', [MediaController::class, 'siteImages']);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-Route::get('/session', [AuthController::class, 'session']);
+Route::get('/session', [AuthController::class, 'session'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/properties', [PropertyController::class, 'store']);

@@ -105,7 +105,7 @@
                 </div>
                 @error('image') <span style="color:var(--danger);font-size:0.78rem;margin-top:4px;display:block;">{{ $message }}</span> @enderror
                 @if(isset($property) && $property->image)
-                    <img id="currentImage" src="{{ $property->image }}" class="admin-preview-img">
+                    <img id="currentImage" src="{{ asset('images/' . $property->image) }}" class="admin-preview-img">
                     <input type="hidden" name="existingImage" value="{{ $property->image }}">
                 @endif
                 <img id="imagePreview" class="admin-preview-img" style="display:none;">

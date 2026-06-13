@@ -15,6 +15,10 @@ class Testimonial extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        '*',
+        'name',
+        'role',
+        'content',
+        'rating',
+        'image',
     ];
 }

@@ -15,7 +15,12 @@ class Inquiry extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        '*',
+        'name',
+        'email',
+        'phone',
+        'message',
+        'property',
+        'read',
     ];
 
     protected function casts(): array

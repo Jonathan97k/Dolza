@@ -39,7 +39,7 @@ class PropertyController extends Controller
             $file = $request->file('image');
             $filename = time() . '-' . $file->hashName();
             $file->move(public_path('images'), $filename);
-            $property->image = '/images/' . $filename;
+            $property->image = $filename;
         }
 
         $property->save();
@@ -70,7 +70,7 @@ class PropertyController extends Controller
             $file = $request->file('image');
             $filename = time() . '-' . $file->hashName();
             $file->move(public_path('images'), $filename);
-            $property->image = '/images/' . $filename;
+            $property->image = $filename;
         }
 
         $property->save();

@@ -21,7 +21,7 @@ class SettingController extends Controller
         foreach ($request->all() as $key => $value) {
             Setting::updateOrCreate(
                 ['key' => $key],
-                ['id' => (string) Str::uuid(), 'value' => $value]
+                ['value' => $value]
             );
         }
 

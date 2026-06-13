@@ -16,6 +16,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
         $middleware->alias([
             'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
+            'admin' => \App\Http\Middleware\IsAdmin::class,
         ]);
         $middleware->api(prepend: [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,

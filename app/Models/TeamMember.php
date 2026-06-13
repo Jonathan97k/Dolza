@@ -17,6 +17,11 @@ class TeamMember extends Model
     protected $table = 'team';
 
     protected $fillable = [
-        '*',
+        'name',
+        'role',
+        'bio',
+        'image',
+        'email',
+        'phone',
     ];
 }

@@ -27,7 +27,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('admin.dashboard');
         Route::resource('properties', AdminPropertyController::class)->names('admin.properties');
         Route::patch('properties/{id}/status', [AdminPropertyController::class, 'updateStatus'])->name('admin.properties.status');
