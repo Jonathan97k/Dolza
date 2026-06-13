@@ -11,7 +11,10 @@ class PropertyController extends Controller
 {
     public function index()
     {
-        $properties = Property::where('status', 'approved')->get();
+        $properties = Property::where('status', 'approved')->get()->map(function ($p) {
+            $p->image = $p->image ? asset('images/' . $p->image) : null;
+            return $p;
+        });
 
         return response()->json($properties);
     }

@@ -11,7 +11,12 @@ class TeamController extends Controller
 {
     public function index()
     {
-        return response()->json(TeamMember::all());
+        $members = TeamMember::all()->map(function ($m) {
+            $m->image = $m->image ? asset('images/' . $m->image) : null;
+            return $m;
+        });
+
+        return response()->json($members);
     }
 
     public function store(Request $request)

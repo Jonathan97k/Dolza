@@ -11,7 +11,12 @@ class TestimonialController extends Controller
 {
     public function index()
     {
-        return response()->json(Testimonial::all());
+        $testimonials = Testimonial::all()->map(function ($t) {
+            $t->image = $t->image ? asset('images/' . $t->image) : null;
+            return $t;
+        });
+
+        return response()->json($testimonials);
     }
 
     public function store(Request $request)
