@@ -26,9 +26,8 @@ $app = Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e, $request) {
-            return response($e->getMessage() . "\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString(), 500, [
-                'Content-Type' => 'text/plain',
-            ]);
+            $msg = "Error: " . $e->getMessage() . "\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString();
+            return new \Symfony\Component\HttpFoundation\Response($msg, 500, ['Content-Type' => 'text/plain']);
         });
     })
     ->create()
