@@ -60,7 +60,7 @@
                 </div>
                 @error('image') <span style="color:var(--danger);font-size:0.78rem;margin-top:4px;display:block;">{{ $message }}</span> @enderror
                 @if(isset($member) && $member->image)
-                    <img id="currentImage" src="{{ $member->image }}" class="admin-preview-img">
+                    <img id="currentImage" src="{{ asset('images/' . $member->image) }}" class="admin-preview-img">
                     <input type="hidden" name="existingImage" value="{{ $member->image }}">
                 @endif
                 <img id="imagePreview" class="admin-preview-img" style="display:none;">

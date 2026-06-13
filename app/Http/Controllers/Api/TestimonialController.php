@@ -36,7 +36,7 @@ class TestimonialController extends Controller
             $file = $request->file('image');
             $filename = time() . '-' . $file->hashName();
             $file->move(public_path('images'), $filename);
-            $testimonial->image = '/images/' . $filename;
+            $testimonial->image = $filename;
         }
 
         $testimonial->save();
@@ -61,7 +61,7 @@ class TestimonialController extends Controller
             $file = $request->file('image');
             $filename = time() . '-' . $file->hashName();
             $file->move(public_path('images'), $filename);
-            $testimonial->image = '/images/' . $filename;
+            $testimonial->image = $filename;
         }
 
         $testimonial->save();

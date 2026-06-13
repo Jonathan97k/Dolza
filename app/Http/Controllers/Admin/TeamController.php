@@ -35,7 +35,7 @@ class TeamController extends Controller
             $file = $request->file('image');
             $filename = time() . '-' . $file->hashName();
             $file->move(public_path('images'), $filename);
-            $data['image'] = '/images/' . $filename;
+            $data['image'] = $filename;
         }
 
         TeamMember::create($data);
@@ -67,7 +67,7 @@ class TeamController extends Controller
             $file = $request->file('image');
             $filename = time() . '-' . $file->hashName();
             $file->move(public_path('images'), $filename);
-            $data['image'] = '/images/' . $filename;
+            $data['image'] = $filename;
         }
 
         $member->update($data);

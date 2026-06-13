@@ -11,7 +11,7 @@
             @forelse($team as $member)
             <div class="team-card">
                 <div class="team-card-img">
-                    <img src="{{ $member->image ? $member->image : '/favicon.png' }}" alt="{{ $member->name }}">
+                    <img src="{{ $member->image ? asset('images/' . $member->image) : '/favicon.png' }}" alt="{{ $member->name }}">
                 </div>
                 <div class="team-card-body">
                     <h3>{{ $member->name }}</h3>

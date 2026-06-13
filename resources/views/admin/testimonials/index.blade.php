@@ -22,7 +22,7 @@
                 <tbody>
                     @forelse($testimonials as $testimonial)
                     <tr>
-                        <td><img src="{{ $testimonial->image ? $testimonial->image : '/favicon.png' }}" alt="" class="testimonial-thumb"></td>
+                        <td><img src="{{ $testimonial->image ? asset('images/' . $testimonial->image) : '/favicon.png' }}" alt="" class="testimonial-thumb"></td>
                         <td><strong>{{ $testimonial->name }}</strong></td>
                         <td>{{ $testimonial->role ?? '—' }}</td>
                         <td class="testimonial-content-cell" title="{{ $testimonial->content }}">{{ $testimonial->content }}</td>
