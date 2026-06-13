@@ -14,17 +14,31 @@ try {
     if (getenv('VERCEL') === '1') {
         $tmp = '/tmp/laravel';
 
-        foreach ([
+        $dirs = [
             'storage/framework/cache/data',
             'storage/framework/sessions',
             'storage/framework/views',
             'storage/logs',
             'storage/app/public',
             'storage/app/private',
-        ] as $dir) {
+            'bootstrap/cache',
+        ];
+
+        foreach ($dirs as $dir) {
             $path = $tmp . '/' . $dir;
             if (!is_dir($path)) {
                 mkdir($path, 0755, true);
+            }
+        }
+
+        $cacheDir = $appBase . '/bootstrap/cache';
+        $tmpCacheDir = $tmp . '/bootstrap/cache';
+        if (is_dir($cacheDir)) {
+            foreach (glob($cacheDir . '/*.php') as $cacheFile) {
+                $dest = $tmpCacheDir . '/' . basename($cacheFile);
+                if (!file_exists($dest)) {
+                    copy($cacheFile, $dest);
+                }
             }
         }
 
@@ -45,6 +59,21 @@ try {
 
         putenv('VIEW_COMPILED_PATH=' . $tmp . '/storage/framework/views');
         $_ENV['VIEW_COMPILED_PATH'] = $tmp . '/storage/framework/views';
+
+        putenv('APP_CONFIG_CACHE=' . $tmp . '/bootstrap/cache/config.php');
+        $_ENV['APP_CONFIG_CACHE'] = $tmp . '/bootstrap/cache/config.php';
+
+        putenv('APP_ROUTES_CACHE=' . $tmp . '/bootstrap/cache/routes-v7.php');
+        $_ENV['APP_ROUTES_CACHE'] = $tmp . '/bootstrap/cache/routes-v7.php';
+
+        putenv('APP_EVENTS_CACHE=' . $tmp . '/bootstrap/cache/events.php');
+        $_ENV['APP_EVENTS_CACHE'] = $tmp . '/bootstrap/cache/events.php';
+
+        putenv('APP_PACKAGES_CACHE=' . $tmp . '/bootstrap/cache/packages.php');
+        $_ENV['APP_PACKAGES_CACHE'] = $tmp . '/bootstrap/cache/packages.php';
+
+        putenv('APP_SERVICES_CACHE=' . $tmp . '/bootstrap/cache/services.php');
+        $_ENV['APP_SERVICES_CACHE'] = $tmp . '/bootstrap/cache/services.php';
 
         putenv('LOG_PATH=' . $tmp . '/storage/logs/laravel.log');
         $_ENV['LOG_PATH'] = $tmp . '/storage/logs/laravel.log';

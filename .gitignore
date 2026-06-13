@@ -11,6 +11,7 @@
 /public/hot
 /public/storage
 /bootstrap/cache/*.php
+!/bootstrap/cache/.gitkeep
 /build/
 .DS_Store
 Thumbs.db
