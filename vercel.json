@@ -1,20 +1,45 @@
 ﻿{
   "version": 2,
+  "framework": null,
   "functions": {
-    "api/index.php": {
-      "runtime": "vercel-php@0.6.0"
+    "api/*.php": {
+      "runtime": "vercel-php@0.9.0",
+      "memory": 3008,
+      "maxDuration": 60
     }
   },
+  "outputDirectory": "public",
   "routes": [
-    { "src": "/css/(.*)", "dest": "/public/css/$1" },
-    { "src": "/js/(.*)", "dest": "/public/js/$1" },
-    { "src": "/images/(.*)", "dest": "/public/images/$1" },
-    { "src": "/storage/(.*)", "dest": "/public/storage/$1" },
-    { "src": "/favicon\\.ico", "dest": "/public/favicon.ico" },
-    { "src": "/favicon\\.png", "dest": "/public/favicon.png" },
-    { "src": "/manifest\\.json", "dest": "/public/manifest.json" },
-    { "src": "/sw\\.js", "dest": "/public/sw.js" },
-    { "src": "/offline\\.html", "dest": "/public/offline.html" },
-    { "src": "/(.*)", "dest": "/api/index.php" }
-  ]
+    {
+      "src": "/(css/.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/(js/.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/(images/.*)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/(favicon\\.ico|favicon\\.png|manifest\\.json|sw\\.js|offline\\.html)",
+      "dest": "/public/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ],
+  "env": {
+    "APP_CONFIG_CACHE": "/tmp/config.php",
+    "APP_EVENTS_CACHE": "/tmp/events.php",
+    "APP_PACKAGES_CACHE": "/tmp/packages.php",
+    "APP_ROUTES_CACHE": "/tmp/routes.php",
+    "APP_SERVICES_CACHE": "/tmp/services.php",
+    "VIEW_COMPILED_PATH": "/tmp",
+    "CACHE_DRIVER": "array",
+    "LOG_CHANNEL": "stderr",
+    "SESSION_DRIVER": "array"
+  }
 }

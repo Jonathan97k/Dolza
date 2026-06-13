@@ -2,13 +2,12 @@ node_modules/
 .git/
 .env
 .env.*.old
+vendor/
 storage/logs/*
 storage/framework/sessions/*
 storage/framework/views/*
 storage/framework/cache/*
-bootstrap/cache/config.php
-bootstrap/cache/routes-v7.php
-bootstrap/cache/packages.php
+bootstrap/cache/
 tests/
 build.bat
 start.bat
@@ -17,3 +16,4 @@ README.md
 Thumbs.db
 *.log
 0
+.vercel/
