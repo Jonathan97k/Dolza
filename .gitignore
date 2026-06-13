@@ -10,9 +10,7 @@
 !storage/logs/.gitignore
 /public/hot
 /public/storage
-/bootstrap/cache/config.php
-/bootstrap/cache/routes-v7.php
-/bootstrap/cache/packages.php
+/bootstrap/cache/*.php
 /build/
 .DS_Store
 Thumbs.db
