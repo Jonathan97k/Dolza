@@ -29,10 +29,13 @@ $app = Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e, $request) {
             $debug = config('app.debug');
+            $status = $e instanceof \Symfony\Component\HttpKernel\Exception\HttpException
+                ? $e->getStatusCode()
+                : 500;
             $msg = $debug
                 ? "Error: " . $e->getMessage() . "\nFile: " . $e->getFile() . ":" . $e->getLine() . "\n\n" . $e->getTraceAsString()
-                : "Server Error";
-            return new \Symfony\Component\HttpFoundation\Response($msg, 500, ['Content-Type' => 'text/plain']);
+                : ($status === 404 ? 'Not Found' : 'Server Error');
+            return new \Symfony\Component\HttpFoundation\Response($msg, $status, ['Content-Type' => 'text/plain']);
         });
     })
     ->create()

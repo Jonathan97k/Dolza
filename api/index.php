@@ -12,17 +12,10 @@ try {
     $appBase = dirname(__DIR__);
 
     if (getenv('VERCEL') === '1') {
-        // Fix base path so Laravel generates correct URLs (strip /api prefix)
-        if (isset($_SERVER['REQUEST_URI'])) {
-            $uriPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-            if (strpos($uriPath, '/api/') === 0) {
-                $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], 4) ?: '/';
-            } elseif ($uriPath === '/api' || $uriPath === '/api/index.php') {
-                $_SERVER['REQUEST_URI'] = '/';
-            }
-        }
         $_SERVER['SCRIPT_NAME'] = '/index.php';
         $_SERVER['PHP_SELF'] = '/index.php';
+        $_SERVER['SERVER_NAME'] = parse_url(getenv('APP_URL') ?: 'https://dolza.vercel.app', PHP_URL_HOST);
+        $_SERVER['HTTP_HOST'] = $_SERVER['SERVER_NAME'];
 
         $tmp = '/tmp/laravel';
 
