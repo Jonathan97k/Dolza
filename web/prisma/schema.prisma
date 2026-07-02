@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Property {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  price       Float
+  surface     Float?
+  rooms       Int?
+  bedrooms    Int?
+  bathrooms   Int?
+  location    String?
+  city        String?
+  type        String   @default("sale")
+  status      String   @default("available")
+  features    String   @default("[]")
+  images      String   @default("[]")
+  videoUrl    String?  @map("video_url")
+  virtualTour String?  @map("virtual_tour")
+  latitude    Float?
+  longitude   Float?
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  inquiries Inquiry[]
+}
+
+model Team {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  bio       String?
+  image     String?
+  email     String?
+  phone     String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  role      String?
+  content   String
+  rating    Int      @default(5)
+  image     String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Inquiry {
+  id         String   @id @default(uuid())
+  propertyId String?  @map("property_id")
+  name       String
+  email      String
+  phone      String?
+  message    String
+  type       String   @default("property")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  property Property? @relation(fields: [propertyId], references: [id])
+}
+
+model Content {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  type      String   @default("text")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  type      String   @default("text")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
