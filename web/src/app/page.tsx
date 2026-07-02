@@ -1,25 +1,13 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import Link from "next/link"
+import { prisma } from "@/lib/prisma"
 
-type Property = {
-  id: string; title: string; description: string; price: number
-  surface: number | null; rooms: number | null; bedrooms: number | null
-  bathrooms: number | null; location: string | null; city: string | null
-  type: string; status: string; images: string
-}
+export const dynamic = "force-dynamic"
 
-type Testimonial = { id: string; name: string; role: string | null; content: string; rating: number; image: string | null }
-
-export default function Home() {
-  const [properties, setProperties] = useState<Property[]>([])
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([])
-
-  useEffect(() => {
-    fetch("/api/properties").then(r => r.json()).then(setProperties)
-    fetch("/api/testimonials").then(r => r.json()).then(setTestimonials)
-  }, [])
+export default async function Home() {
+  const [properties, testimonials] = await Promise.all([
+    prisma.property.findMany({ orderBy: { createdAt: "desc" } }),
+    prisma.testimonial.findMany({ orderBy: { createdAt: "desc" } }),
+  ])
 
   const parseImages = (img: string) => {
     try { const p = JSON.parse(img); return Array.isArray(p) ? p[0] : null } catch { return null }

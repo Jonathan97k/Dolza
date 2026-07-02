@@ -1,14 +1,10 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import Link from "next/link"
+import { prisma } from "@/lib/prisma"
 
-type TeamMember = { id: string; name: string; role: string; bio: string | null; image: string | null; email: string | null; phone: string | null }
+export const dynamic = "force-dynamic"
 
-export default function About() {
-  const [team, setTeam] = useState<TeamMember[]>([])
-
-  useEffect(() => { fetch("/api/team").then(r => r.json()).then(setTeam) }, [])
+export default async function About() {
+  const team = await prisma.team.findMany({ orderBy: { order: "asc" } })
 
   return (
     <div>

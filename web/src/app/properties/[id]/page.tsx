@@ -1,44 +1,19 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
+import { notFound } from "next/navigation"
 import Link from "next/link"
+import { prisma } from "@/lib/prisma"
 
-type Property = {
-  id: string; title: string; description: string; price: number
-  surface: number | null; rooms: number | null; bedrooms: number | null
-  bathrooms: number | null; location: string | null; city: string | null
-  type: string; status: string; features: string; images: string
-  videoUrl: string | null; virtualTour: string | null; latitude: number | null; longitude: number | null
-}
+export const dynamic = "force-dynamic"
+import InquiryForm from "./InquiryForm"
 
-export default function PropertyDetail() {
-  const { id } = useParams<{ id: string }>()
-  const [property, setProperty] = useState<Property | null>(null)
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" })
-
-  useEffect(() => {
-    fetch(`/api/properties/${id}`).then(r => r.json()).then(setProperty)
-  }, [id])
-
-  if (!property) return <div style={{ padding: "4rem", textAlign: "center" }}>Loading...</div>
+export default async function PropertyDetail({ params }: { params: { id: string } }) {
+  const property = await prisma.property.findUnique({ where: { id: params.id } })
+  if (!property) notFound()
 
   const parseImages = (img: string) => { try { return JSON.parse(img) } catch { return [] } }
   const parseFeatures = (f: string) => { try { return JSON.parse(f) } catch { return [] } }
   const images = parseImages(property.images)
   const features = parseFeatures(property.features)
   const formatPrice = (p: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(p)
-
-  const handleInquiry = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await fetch("/api/inquiries", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, propertyId: property.id }),
-    })
-    alert("Inquiry sent successfully!")
-    setForm({ name: "", email: "", phone: "", message: "" })
-  }
 
   return (
     <div>
@@ -84,17 +59,7 @@ export default function PropertyDetail() {
 
         <div style={{ marginTop: "3rem", background: "#f8f9fa", padding: "2rem", borderRadius: "0.75rem" }}>
           <h2 style={{ marginBottom: "1rem" }}>Interested in this property?</h2>
-          <form onSubmit={handleInquiry} style={{ display: "grid", gap: "1rem", maxWidth: 500 }}>
-            <input placeholder="Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required
-              style={{ padding: "0.75rem", border: "1px solid #ddd", borderRadius: "0.375rem" }} />
-            <input type="email" placeholder="Email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required
-              style={{ padding: "0.75rem", border: "1px solid #ddd", borderRadius: "0.375rem" }} />
-            <input placeholder="Phone" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })}
-              style={{ padding: "0.75rem", border: "1px solid #ddd", borderRadius: "0.375rem" }} />
-            <textarea placeholder="Message" value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} required rows={4}
-              style={{ padding: "0.75rem", border: "1px solid #ddd", borderRadius: "0.375rem" }} />
-            <button type="submit" className="btn-primary" style={{ border: "none", cursor: "pointer" }}>Send Inquiry</button>
-          </form>
+          <InquiryForm propertyId={property.id} />
         </div>
       </div>
     </div>
