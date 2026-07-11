@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dolza - Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="logo">Dolza<span>.</span></a>
+    <div class="nav-links">
+      <a href="/" class="active">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero" id="heroSection">
+  <div class="container">
+    <h1 id="heroTitle">Find Your Dream Home</h1>
+    <p id="heroSubtitle">Discover premium properties in the most desirable locations. Your perfect space awaits.</p>
+    <a href="properties.html" class="btn btn-light">Browse Properties</a>
+  </div>
+</section>
+
+<section class="section" id="featuredSection">
+  <div class="container">
+    <h2 class="section-title">Featured <span>Properties</span></h2>
+    <div class="property-grid" id="featuredGrid"></div>
+  </div>
+</section>
+
+<section class="section bg-light" id="whyUsSection">
+  <div class="container">
+    <h2 class="section-title">Why <span>Choose Us</span></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px" id="whyUsContent"></div>
+  </div>
+</section>
+
+<section class="section" id="testimonialSection">
+  <div class="container">
+    <h2 class="section-title">What Our <span>Clients Say</span></h2>
+    <div class="testimonial-grid" id="testimonialGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Dolza. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+(async () => {
+  const props = await api('/properties?featured=true');
+  allPropertiesCache = await api('/properties');
+  renderProperties(document.getElementById('featuredGrid'), props.slice(0, 6));
+
+  const settings = await api('/settings');
+  if (settings.siteTitle) document.title = settings.siteTitle;
+
+  const blocks = {};
+  const allBlocks = await api('/content');
+  allBlocks.forEach(b => { blocks[b.key] = b; });
+
+  if (blocks.home) {
+    if (blocks.home.title) document.getElementById('heroTitle').textContent = blocks.home.title;
+    if (blocks.home.subtitle) document.getElementById('heroSubtitle').textContent = blocks.home.subtitle;
+  }
+
+  const whyUs = blocks['home-services'];
+  if (whyUs?.extra?.items) {
+    document.getElementById('whyUsContent').innerHTML = whyUs.extra.items.map(i =>
+      `<div style="text-align:center;padding:24px;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.08)">
+        <h3>${esc(i.title||'')}</h3>
+        <p style="color:#888;margin-top:8px">${esc(i.body||'')}</p>
+      </div>`
+    ).join('');
+  }
+
+  const testimonials = await api('/testimonials?published=true');
+  document.getElementById('testimonialGrid').innerHTML = testimonials.slice(0, 6).map(t =>
+    `<div class="testimonial-card">
+      <div class="stars">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)}</div>
+      <p>${esc(t.content)}</p>
+      <div class="author">${esc(t.name)}</div>
+      ${t.role ? '<div class="role">'+esc(t.role)+'</div>' : ''}
+    </div>`
+  ).join('');
+})();
+</script>
+</body>
+</html>

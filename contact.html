@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact - Dolza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="logo">Dolza<span>.</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="active">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p>Get in touch with our team for inquiries, viewings, or any questions</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start">
+      <div>
+        <h2 style="font-size:1.5rem;margin-bottom:16px">Send Us a <span style="color:#e94560">Message</span></h2>
+        <form class="contact-form" id="contactForm" style="margin:0">
+          <div class="form-group">
+            <label>Name *</label>
+            <input id="inq-name" required>
+          </div>
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" id="inq-email" required>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input id="inq-phone">
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <input id="inq-subject" value="">
+          </div>
+          <div class="form-group">
+            <label>Message *</label>
+            <textarea id="inq-message" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+        <div id="formSuccess" style="display:none;padding:20px;background:#d4edda;border-radius:8px;color:#155724;margin-top:16px">
+          Thank you! Your message has been sent. We'll get back to you shortly.
+        </div>
+      </div>
+      <div>
+        <h2 style="font-size:1.5rem;margin-bottom:16px">Our <span style="color:#e94560">Information</span></h2>
+        <div id="contactInfo">
+          <p style="margin-bottom:8px"><strong>Address:</strong> 123 Business Ave, City</p>
+          <p style="margin-bottom:8px"><strong>Phone:</strong> (555) 123-4567</p>
+          <p style="margin-bottom:8px"><strong>Email:</strong> info@dolza.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Dolza. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+async function api(path, opts = {}) {
+  const res = await fetch('/api' + path, {
+    headers: opts.body && !(opts.body instanceof FormData) ? { 'Content-Type': 'application/json' } : {},
+    ...opts
+  });
+  if (!res.ok) throw new Error('API error');
+  return res.json();
+}
+
+// Pre-fill property from URL
+const params = new URLSearchParams(location.search);
+if (params.get('property')) {
+  document.getElementById('inq-subject').value = 'Inquiry about: ' + params.get('property');
+}
+
+document.getElementById('contactForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  await api('/inquiries', {
+    method: 'POST',
+    body: JSON.stringify({
+      name: document.getElementById('inq-name').value,
+      email: document.getElementById('inq-email').value,
+      phone: document.getElementById('inq-phone').value,
+      subject: document.getElementById('inq-subject').value,
+      message: document.getElementById('inq-message').value,
+    }),
+  });
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+});
+</script>
+</body>
+</html>

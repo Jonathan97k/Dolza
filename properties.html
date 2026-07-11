@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Properties - Dolza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="logo">Dolza<span>.</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="properties.html" class="active">Properties</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="container">
+    <h1>Our Properties</h1>
+    <p>Browse our complete collection of premium real estate listings</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="filter-bar">
+      <select id="filterType">
+        <option value="">All Types</option>
+        <option value="House">House</option>
+        <option value="Apartment">Apartment</option>
+        <option value="Villa">Villa</option>
+        <option value="Condo">Condo</option>
+        <option value="Land">Land</option>
+        <option value="Commercial">Commercial</option>
+      </select>
+      <select id="filterStatus">
+        <option value="">All Status</option>
+        <option value="For Sale">For Sale</option>
+        <option value="For Rent">For Rent</option>
+        <option value="Sold">Sold</option>
+      </select>
+      <input type="text" id="filterSearch" placeholder="Search properties..." style="flex:1;min-width:200px">
+    </div>
+    <div class="property-grid" id="propertyGrid"></div>
+    <div id="noResults" style="display:none;text-align:center;padding:40px;color:#888">No properties found.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Dolza. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+(async () => {
+  allPropertiesCache = await api('/properties');
+  const grid = document.getElementById('propertyGrid');
+  const noResults = document.getElementById('noResults');
+
+  function applyFilters() {
+    const type = document.getElementById('filterType').value;
+    const status = document.getElementById('filterStatus').value;
+    const search = document.getElementById('filterSearch').value.toLowerCase();
+
+    let filtered = allPropertiesCache;
+    if (type) filtered = filtered.filter(p => p.type === type);
+    if (status) filtered = filtered.filter(p => p.status === status);
+    if (search) filtered = filtered.filter(p =>
+      p.title.toLowerCase().includes(search) ||
+      p.location.toLowerCase().includes(search) ||
+      (p.description && p.description.toLowerCase().includes(search))
+    );
+
+    if (filtered.length) {
+      noResults.style.display = 'none';
+      renderProperties(grid, filtered);
+    } else {
+      grid.innerHTML = '';
+      noResults.style.display = 'block';
+    }
+  }
+
+  renderProperties(grid, allPropertiesCache);
+
+  document.getElementById('filterType').addEventListener('change', applyFilters);
+  document.getElementById('filterStatus').addEventListener('change', applyFilters);
+  document.getElementById('filterSearch').addEventListener('input', applyFilters);
+})();
+</script>
+</body>
+</html>

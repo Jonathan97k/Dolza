@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About - Dolza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="logo">Dolza<span>.</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="container">
+    <h1>About Us</h1>
+    <p id="aboutSubtitle">Learn more about our story and the team behind Dolza</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div style="max-width:800px;margin:0 auto;text-align:center">
+      <h2 class="section-title" id="aboutTitle">Our <span>Story</span></h2>
+      <p id="aboutBody" style="color:#666;font-size:1.05rem;line-height:1.8"></p>
+    </div>
+  </div>
+</section>
+
+<section class="section bg-light">
+  <div class="container">
+    <h2 class="section-title">Meet Our <span>Team</span></h2>
+    <div class="team-grid" id="teamGrid"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Dolza. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+(async () => {
+  const blocks = {};
+  (await api('/content')).forEach(b => { blocks[b.key] = b; });
+
+  const about = blocks['about'];
+  if (about) {
+    if (about.subtitle) document.getElementById('aboutSubtitle').textContent = about.subtitle;
+    if (about.title) document.getElementById('aboutTitle').innerHTML = about.title.replace(/\*(.*?)\*/g, '<span>$1</span>');
+    if (about.body) document.getElementById('aboutBody').textContent = about.body;
+  }
+
+  const team = await api('/team');
+  document.getElementById('teamGrid').innerHTML = team.map(m =>
+    `<div class="team-card">
+      <img src="${esc(m.image || 'https://placehold.co/200x200/1a1a2e/fff?text='+m.name.charAt(0))}" alt="${esc(m.name)}" loading="lazy">
+      <h3>${esc(m.name)}</h3>
+      <p>${esc(m.role)}</p>
+      ${m.bio ? '<p style="margin-top:8px;font-size:0.85rem">'+esc(m.bio)+'</p>' : ''}
+    </div>`
+  ).join('');
+})();
+</script>
+</body>
+</html>
