@@ -11,9 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
-    <meta name="theme-color" content="#0a0a0f">
+    <meta name="theme-color" content="#173b32">
     <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/redesign.css') }}">
     @stack('head')
 </head>
 <body>
@@ -35,6 +36,7 @@
                     <li><a href="{{ url('/about') }}" @if(Route::currentRouteNamed('about')) class="active" @endif>About</a></li>
                     <li><a href="{{ url('/contact') }}" @if(Route::currentRouteNamed('contact')) class="active" @endif>Contact</a></li>
                 </ul>
+                <a class="nav-cta" href="{{ url('/contact') }}">List your property <span aria-hidden="true">↗</span></a>
                 <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
             </div>
         </div>
